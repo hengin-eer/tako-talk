@@ -11,7 +11,7 @@ export const TopHeader: FC = () => {
                 src="/logo.png"
                 alt="Tako Talk Hero Image"
             />
-            <h1 className="pt-8 text-4xl font-bold">Tako Talk | タコさんとフリー雑談</h1>
+            <h1 className="pt-8 text-white text-4xl font-bold">Tako Talk | タコさんとフリー雑談</h1>
         </header>
     )
 }

@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${inter.className} relative`}>
+      <body className={`${inter.className} relative px-10`}>
         {/* Background Image / Video */}
         <Image
           className="absolute top-0 left-0 w-full h-screen -z-50 brightness-75"
