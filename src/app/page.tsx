@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { StartChatBtn } from "./StartChatBtn";
 import { TopHeader } from "./TopHeader";
 
