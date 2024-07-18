@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={`${inter.className} relative px-10`}>
         {/* Background Image / Video */}
         <Image
-          className="absolute top-0 left-0 w-full h-screen -z-50 brightness-75"
+          className="absolute top-0 left-0 w-full h-[100svh] -z-50 brightness-75"
           width={1000}
           height={1000}
           src="/ocean-background.jpg"
