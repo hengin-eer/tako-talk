@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function ChatPage() {
 	return (
-		<main className="min-h-screen h-full pt-5 pb-8 flex flex-col items-center justify-between">
+		<main className="min-h-[100svh] h-full pt-5 pb-8 flex flex-col items-center justify-between">
 			<OctopusModel />
 			<ChatArea />
 		</main>
