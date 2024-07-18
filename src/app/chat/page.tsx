@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function ChatPage() {
 	return (
-		<main className="h-screen py-5 flex flex-col items-center justify-between">
+		<main className="h-screen pt-5 pb-8 flex flex-col items-center justify-between">
 			<OctopusModel />
 			<ChatArea />
 		</main>
