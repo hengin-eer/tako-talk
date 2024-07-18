@@ -84,14 +84,14 @@ export function ChatArea() {
 				{conversation.lastQuestion && (
 					<div>
 						<Label className="text-white">質問だぜぇ～</Label>
-						<p className="p-4 mt-2 text-black text-base rounded-md bg-slate-100">
+						<p className="p-4 mt-2 max-h-[128px] overflow-y-scroll text-black text-base rounded-md bg-slate-100">
 							{conversation?.lastQuestion}
 						</p>
 					</div>
 				)}
 				<div>
 					<Label className="text-white">回答だぜぇ～</Label>
-					<p className="p-4 mt-2 text-black text-base rounded-md bg-slate-100">
+					<p className="p-4 mt-2 max-h-[128px] overflow-y-scroll text-black text-base rounded-md bg-slate-100">
 						{conversation?.responseText}
 					</p>
 				</div>
