@@ -31,7 +31,7 @@ export function ChatArea() {
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-		console.log(data);
+		alert(data.chatMessage);
   }
 
   return (
@@ -42,7 +42,11 @@ export function ChatArea() {
           name="chatMessage"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>ご用件</FormLabel>
+              <FormLabel
+								className="text-white"
+							>
+								ご用件
+							</FormLabel>
               <FormControl>
                 <Textarea
 									placeholder="なにか入力してくれぇ～"
@@ -50,13 +54,18 @@ export function ChatArea() {
 								/>
               </FormControl>
               <FormDescription>
-                This is your public display name.
+								世間一般の常識に沿っているなら何でも答えるぜぇ～
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">送信だ！</Button>
+        <Button
+					className="bg-emerald-500 hover:bg-emerald-600 text-white"
+					type="submit"
+				>
+					送信だ！
+				</Button>
       </form>
     </Form>
   )
