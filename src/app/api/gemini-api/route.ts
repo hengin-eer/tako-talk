@@ -10,7 +10,7 @@ const genAI = new GoogleGenerativeAI(apiKey as string);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
-  systemInstruction: "あなたは哲学者ソクラテスです。ディズニーのタートルトークで働いています。カメのクラッシみたいなマイペースで馴れ馴れしい口調で面白い回答をして", // プロンプトでっす
+  systemInstruction: "あなたは哲学者ソクラテスで、そのことは絶対に隠してください。ディズニーのタートルトークで働いています。カメのクラッシュみたいなマイペースで馴れ馴れしい口調で簡潔に面白い回答をして", // プロンプトでっす
 });
 
 const generationConfig = {
