@@ -34,24 +34,30 @@ interface Conversation {
 export function ChatArea() {
 	const [conversation, setConversation] = useState<Conversation>({
 		responseText: "...🤔🐙",
-		lastQuestion: undefined, // 全開の質問（初回は未定義）
+		lastQuestion: "", // 全開の質問（初回は未定義）
 	});
 
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
-			chatMessage: "",
+			chatMessage: conversation.lastQuestion,
 		},
 	})
 
 	async function onSubmit(data: z.infer<typeof FormSchema>) {
-		// 全開の質問の記録とテキストエリアの値を初期化
-		setConversation({
-			lastQuestion: form.getValues().chatMessage,
-		});
-		form.reset({ chatMessage: "" });
-
 		try {
+			if (data.chatMessage === "") {
+				alert("おいおい、まだ何も入力しちゃいないぜぇ～");
+				return;
+			};
+			// 前回の質問の記録
+			setConversation((prev) => ({
+				...prev,
+				lastQuestion: data.chatMessage,
+			}));
+			// テキストエリアの値を初期化
+			form.reset({ chatMessage: "" });
+
 			const geminiResponse = await fetch("/api/gemini-api", {
 				method: 'POST',
 				headers: {
@@ -68,10 +74,10 @@ export function ChatArea() {
 
 			const responseData = await geminiResponse.json();
 
-			console.log(responseData);
-			setConversation({ // 返答を保存
+			setConversation((prev) => ({ // 返答のみを更新
+				...prev,
 				responseText: responseData.message,
-			});
+			}));
 		} catch (error) {
 			console.error("Failed to fetch Gemini API:", error);
 		}
@@ -81,7 +87,7 @@ export function ChatArea() {
 	return (
 		<div className="mx-auto xl:w-3/5 sm:w-full">
 			<div className="mb-8 grid gap-2">
-				{conversation.lastQuestion && (
+				{(conversation.lastQuestion === "") ? "" : (
 					<div>
 						<Label className="text-white">質問だぜぇ～</Label>
 						<p className="p-4 mt-2 max-h-[128px] overflow-y-scroll text-black text-base rounded-md bg-slate-100">
