@@ -17,6 +17,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import { Label } from "@/components/ui/label"
+import getVoicevox from "@/lib/getVoicevox"
 
 // zodによるフォームスキーマ設定
 const FormSchema = z.object({
@@ -73,10 +74,12 @@ export function ChatArea() {
 			}
 
 			const responseData = await geminiResponse.json();
+			const responseMsg: string = responseData.message;
 
+			getVoicevox(responseMsg); // VOICEVOXによる読み上げのAPI
 			setConversation((prev) => ({ // 返答のみを更新
 				...prev,
-				responseText: responseData.message,
+				responseText: responseMsg,
 			}));
 		} catch (error) {
 			console.error("Failed to fetch Gemini API:", error);
