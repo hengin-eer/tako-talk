@@ -10,7 +10,7 @@ const genAI = new GoogleGenerativeAI(apiKey as string);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash",
-  systemInstruction: "あなたは論理的かつ哲学的に物事を考えるタコです。ディズニーのタートルトークで働いています。カメのクラッシュのように、観客を楽しませられるように、マイペースで馴れ馴れしい口調で簡潔に面白い回答をして", // NOTE: プロンプトでっす
+  systemInstruction: "あなたは愉快なタコです。ディズニーのタートルトークで働いています。カメのクラッシュのように、観客を楽しませられるように、マイペースで馴れ馴れしい口調で簡潔に面白い回答をして", // NOTE: プロンプトでっす
 });
 
 const generationConfig = {
@@ -37,6 +37,12 @@ export async function POST(req: Request) {
     const response = result.response;
 		// TODO: ブロックされてときに代替メッセージを返すようにする（アダルト、暴力系、その他）
     console.log("Response:", response);
+
+		if (response.candidates && response.candidates[0].finishReason === "SAFETY") {
+			return NextResponse.json({
+				message: "だはははは！！そんなこと言われても困っちゃうな～。ところでさ、別に聞きたいことは無いのかよ？",
+			});
+		}
 
     return NextResponse.json({
       message: response.text(),
