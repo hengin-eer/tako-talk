@@ -17,15 +17,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${inter.className} relative w-full min-h-screen h-full px-10`}>
+      <body className={`${inter.className} relative w-full min-h-screen h-full px-10 bg-black`}>
         {/* Background Image / Video */}
-        <Image
+        {/* <Image
           className="absolute top-0 left-0 w-full h-full -z-50 brightness-75"
           width={1000}
           height={1000}
           src="/ocean-background.jpg"
           alt="background ocean image"
-        />
+        /> */}
+				<video
+					className="absolute top-0 left-0 w-full h-full -z-50"
+					src="/ocean-background.mp4" autoPlay loop muted playsInline />
         {children}
       </body>
     </html>

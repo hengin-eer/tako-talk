@@ -66,7 +66,8 @@ export function ChatArea() {
 				},
 				body: JSON.stringify({
 					message: data.chatMessage,
-				})
+				}),
+				referrerPolicy: 'no-referrer-when-downgrade',
 			});
 
 			if (!geminiResponse.ok) {
