@@ -1,6 +1,14 @@
 "use client";
 
-import { FC, useState, useRef, FormEvent, Dispatch, SetStateAction } from "react";
+import {
+	FC,
+	useState,
+	useRef,
+	FormEvent,
+	Dispatch,
+	SetStateAction,
+	useEffect,
+} from "react";
 
 type Props = {
 	onTextUpdate: (text: string) => void; // NOTE: 親コンポーネントに最新のテキストを返す
@@ -24,17 +32,20 @@ const Speech: FC<Props> = ({ onTextUpdate, isRecording, setIsRecording }) => {
 
 	const handleListen = (e: FormEvent<HTMLButtonElement>) => {
 		e.preventDefault();
+		setIsRecording(!isRecording);
+	};
+
+	// NOTE: `useEffect`以外の実装方法無いかな？
+	useEffect(() => {
 		const recognition = recognitionRef.current;
 		if (!recognition) return;
 
 		if (isRecording) {
+			recognition.start();
+		} else {
 			recognition.stop();
 			setText("");
-		} else {
-			recognition.start();
 		}
-
-		setIsRecording((prev) => !prev);
 
 		recognition.onresult = (event) => {
 			const results = event.results;
@@ -51,7 +62,11 @@ const Speech: FC<Props> = ({ onTextUpdate, isRecording, setIsRecording }) => {
 				}
 			}
 		};
-	};
+
+		return () => {
+			recognition.onresult = null;
+		};
+	}, [isRecording]);
 
 	// DEBUG: ログでチェックする用
 	console.log("🏃🏃🏃isRecording: ", isRecording);

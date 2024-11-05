@@ -26,6 +26,7 @@ const ChatForm: FC<Props> = () => {
 	async function onSubmit(e: FormEvent<HTMLButtonElement>) {
 		e.preventDefault();
 		setRequesting(true);
+		setIsRecording(false) // NOTE: この変更によって音声認識を終了
 		try {
 			if (question === "") {
 				alert("おいおい、まだ何も入力しちゃいないぜぇ～");
