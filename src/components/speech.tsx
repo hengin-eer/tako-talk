@@ -1,14 +1,15 @@
 "use client";
 
-import { FC, useState, useRef } from "react";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
+import { FC, useState, useRef, FormEvent, Dispatch, SetStateAction } from "react";
 
-type Props = {};
+type Props = {
+	onTextUpdate: (text: string) => void; // NOTE: 親コンポーネントに最新のテキストを返す
+	isRecording: boolean;
+	setIsRecording: Dispatch<SetStateAction<boolean>>;
+};
 
-const Speech: FC<Props> = () => {
-	const [isRecording, setIsRecording] = useState<boolean>(false);
-	const [text, setText] = useState<string>("Hello, world");
+const Speech: FC<Props> = ({ onTextUpdate, isRecording, setIsRecording }) => {
+	const [text, setText] = useState<string>("");
 	const [transcript, setTranscript] = useState<string>("");
 
 	// `useRef` を使って `recognition` インスタンスを保持する
@@ -21,7 +22,8 @@ const Speech: FC<Props> = () => {
 		recognitionRef.current.interimResults = true;
 	}
 
-	const handleListen = () => {
+	const handleListen = (e: FormEvent<HTMLButtonElement>) => {
+		e.preventDefault();
 		const recognition = recognitionRef.current;
 		if (!recognition) return;
 
@@ -38,7 +40,11 @@ const Speech: FC<Props> = () => {
 			const results = event.results;
 			for (let i = event.resultIndex; i < results.length; i++) {
 				if (results[i].isFinal) {
-					setText((prevText) => prevText + results[i][0].transcript);
+					setText((prevText) => {
+						const updatedText = prevText + results[i][0].transcript;
+						onTextUpdate(updatedText);
+						return updatedText;
+					});
 					setTranscript("");
 				} else {
 					setTranscript(results[i][0].transcript);
@@ -47,15 +53,26 @@ const Speech: FC<Props> = () => {
 		};
 	};
 
+	// DEBUG: ログでチェックする用
+	console.log("🏃🏃🏃isRecording: ", isRecording);
+	console.log("🤔🤔🤔途中経過: ", transcript);
+	console.log("📝📝📝テキスト全文: ", text);
+
 	return (
-		<div className="flex flex-col gap-5 text-white">
-			<Label>isRecording: {String(isRecording)}</Label>
-			<Label>途中経過： {transcript}</Label>
-			<Label>全文： {text}</Label>
-			<Button onClick={handleListen}>
-				{isRecording ? "停止" : "録音開始"}
-			</Button>
-		</div>
+		<button
+			className={`w-max p-3 rounded-full transition duration-300 ${
+				isRecording ? "bg-red-400" : "bg-green-400"
+			}`}
+			onClick={(e) => handleListen(e)}
+		>
+			<span
+				className={`block text-2xl leading-[0] text-white iconify ${
+					isRecording
+						? "material-symbols--stop-rounded"
+						: "material-symbols--mic-rounded"
+				}`}
+			/>
+		</button>
 	);
 };
 
