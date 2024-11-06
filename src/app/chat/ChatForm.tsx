@@ -3,6 +3,7 @@
 import Speech from "@/components/speech";
 import getVoicevox from "@/lib/getVoicevox";
 import { FC, FormEvent, useState } from "react";
+import BlurSection from "./BlurSection";
 
 type Props = {};
 
@@ -16,7 +17,7 @@ const ChatForm: FC<Props> = () => {
 	const [question, setQuestion] = useState<string>("");
 	const [requesting, setRequesting] = useState<boolean>(false);
 	const [conversation, setConversation] = useState<Conversation>({
-		responseText: "...🤔🐙",
+		responseText: "",
 		lastQuestion: "",
 		role: "",
 	});
@@ -26,7 +27,7 @@ const ChatForm: FC<Props> = () => {
 	async function onSubmit(e: FormEvent<HTMLButtonElement>) {
 		e.preventDefault();
 		setRequesting(true);
-		setIsRecording(false) // NOTE: この変更によって音声認識を終了
+		setIsRecording(false); // NOTE: この変更によって音声認識を終了
 		try {
 			if (question === "") {
 				alert("おいおい、まだ何も入力しちゃいないぜぇ～");
@@ -62,16 +63,22 @@ const ChatForm: FC<Props> = () => {
 	}
 
 	return (
-		<form className="flex flex-col items-center gap-4">
-			<div className="mb-5 text-white">
-				<p>質問: {question === "" ? conversation.lastQuestion : question}</p>
-				<p>回答: {conversation.responseText}</p>
+		<form className="fixed bottom-5 w-full mx-auto px-5 flex flex-col items-center gap-4">
+			<div className="w-full lg:max-w-[800px] mb-5 text-black">
+				<BlurSection title="🐙回答" className="mb-4">
+					{conversation.responseText}
+				</BlurSection>
+				<BlurSection title="🤔質問">
+					{question === "" ? conversation.lastQuestion : question}
+				</BlurSection>
 			</div>
 			<footer className="flex items-center gap-4 w-max px-4 py-3 rounded-full bg-white shadow-sm">
-				<Speech onTextUpdate={setQuestion} isRecording={isRecording} setIsRecording={setIsRecording} />
-				<button
-					className="p-2"
-					onClick={(e) => onSubmit(e)}>
+				<Speech
+					onTextUpdate={setQuestion}
+					isRecording={isRecording}
+					setIsRecording={setIsRecording}
+				/>
+				<button className="p-2" onClick={(e) => onSubmit(e)}>
 					<span
 						className={`block text-2xl leading-[0] iconify ${
 							requesting
