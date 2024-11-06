@@ -13,6 +13,7 @@ import {
 } from "react";
 import BlurSection from "./BlurSection";
 import { ActionName } from "@/types/Model";
+import VisibilityButton from "./VisibilityButton";
 
 type Props = {
 	setActionName: Dispatch<SetStateAction<ActionName>>;
@@ -32,6 +33,8 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 		lastQuestion: "",
 		role: "",
 	});
+	const [isQuestionVisible, setIsQuestionVisible] = useState<boolean>(true);
+	const [isAnswerVisible, setIsAnswerVisible] = useState<boolean>(true);
 
 	const [isRecording, setIsRecording] = useState<boolean>(false);
 
@@ -86,28 +89,47 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 	return (
 		<form className="fixed bottom-5 w-full mx-auto px-5 flex flex-col items-center gap-4">
 			<div className="w-full lg:max-w-[800px] mb-5 text-black">
-				<BlurSection title="🐙回答" className="mb-4">
-					{conversation.responseText}
-				</BlurSection>
-				<BlurSection title="🤔質問">
-					{question === "" ? conversation.lastQuestion : question}
-				</BlurSection>
+				{isAnswerVisible && (
+					<BlurSection title="🐙回答" className="mb-4">
+						{conversation.responseText}
+					</BlurSection>
+				)}
+				{isQuestionVisible && (
+					<BlurSection title="🤔質問">
+						{question === "" ? conversation.lastQuestion : question}
+					</BlurSection>
+				)}
 			</div>
-			<footer className="flex items-center gap-4 w-max px-4 py-3 rounded-full bg-white shadow-sm">
-				<Speech
-					onTextUpdate={setQuestion}
-					isRecording={isRecording}
-					setIsRecording={setIsRecording}
-				/>
-				<button className="p-2" onClick={(e) => onSubmit(e)}>
-					<span
-						className={`block text-2xl leading-[0] iconify ${
-							isRequesting
-								? "svg-spinners--gooey-balls-1"
-								: "material-symbols--send-outline-rounded"
-						}`}
+			<footer className="flex items-center gap-6">
+				<div className="flex items-center gap-3">
+					<VisibilityButton
+						text="🤔"
+						isVisible={isQuestionVisible}
+						setIsVisible={setIsQuestionVisible}
 					/>
-				</button>
+					<VisibilityButton
+						text="🐙"
+						isVisible={isAnswerVisible}
+						setIsVisible={setIsAnswerVisible}
+					/>
+				</div>
+
+				<div className="flex items-center gap-4 w-max px-4 py-3 rounded-full bg-white shadow-sm">
+					<Speech
+						onTextUpdate={setQuestion}
+						isRecording={isRecording}
+						setIsRecording={setIsRecording}
+					/>
+					<button className="p-2" onClick={(e) => onSubmit(e)}>
+						<span
+							className={`block text-2xl leading-[0] iconify ${
+								isRequesting
+									? "svg-spinners--gooey-balls-1"
+									: "material-symbols--send-outline-rounded"
+							}`}
+						/>
+					</button>
+				</div>
 			</footer>
 		</form>
 	);
