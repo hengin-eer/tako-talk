@@ -10,7 +10,7 @@ const PageSection = () => {
 		useState<ActionName>("[保留アクション].001");
 
 	return (
-		<main className="min-h-[100svh] h-full pt-5 pb-8 flex flex-col items-center justify-between">
+		<main className="min-h-[100svh] h-full pt-5 pb-8 grid place-items-center">
 			<ModelArea actionName={actionName} />
 			<ChatForm />
 		</main>

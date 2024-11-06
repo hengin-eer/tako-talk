@@ -12,8 +12,8 @@ type Props = {
 
 export const ModelArea: FC<Props> = ({ actionName }) => {
 	return (
-		<div className="mt-[160px] mx-auto h-[60vh]">
-			<Canvas camera={{ position: [0, 0, 10], fov: 30 }}>
+		<div className="mx-auto w-full h-full">
+			<Canvas camera={{ position: [0, 0, 10], fov: 40 }}>
 				<OrbitControls enableRotate={true} enableZoom={true} />
 				<ambientLight intensity={1} color={"#a0d8ef"} />
 				<fog attach="fog" color={"#2288aa"} near={3} far={20} />
