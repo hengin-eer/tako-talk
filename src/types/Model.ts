@@ -1,10 +1,16 @@
 import * as THREE from "three";
 import { GLTF } from "three-stdlib";
 
+/**
+ * TODO: ここを変えて欲しい
+ * というかアニメーションがどう見ても足りないので修正してもらう必要があるか？
+ */
 export type ActionName =
 	| "[保留アクション].001"
 	| "[保留アクション]"
 	| "[保留アクション].002";
+
+type KeyActionName = "default" | "twisting" | "thinking";
 
 export interface GLTFAction extends THREE.AnimationClip {
 	name: ActionName;
