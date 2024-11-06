@@ -26,6 +26,7 @@ export type GLTFResult = GLTF & {
 		ik2R: THREE.Bone;
 		ik3R: THREE.Bone;
 		ik4R: THREE.Bone;
+		'スポット_Orientation': THREE.SpotLight
 	};
 	materials: {
 		skin: THREE.MeshPhysicalMaterial;

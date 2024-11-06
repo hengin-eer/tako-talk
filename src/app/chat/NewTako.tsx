@@ -99,10 +99,10 @@ const Model: FC<Props> = ({ actionName }, props) => {
 						penumbra={0.15}
 						decay={2}
 						rotation={[-Math.PI / 2, 0, 0]}
-						target={nodes.スポット_Orientation.target}
+						target={nodes['スポット_Orientation'].target}
 					>
 						<primitive
-							object={nodes.スポット_Orientation.target}
+							object={nodes["スポット_Orientation"].target}
 							position={[0, 0, -1]}
 						/>
 					</spotLight>
