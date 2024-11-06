@@ -2,10 +2,21 @@
 
 import Speech from "@/components/speech";
 import getVoicevox from "@/lib/getVoicevox";
-import { FC, FormEvent, useState } from "react";
+import {
+	Dispatch,
+	FC,
+	FormEvent,
+	SetStateAction,
+	useEffect,
+	useMemo,
+	useState,
+} from "react";
 import BlurSection from "./BlurSection";
+import { ActionName } from "@/types/Model";
 
-type Props = {};
+type Props = {
+	setActionName: Dispatch<SetStateAction<ActionName>>;
+};
 
 type Conversation = {
 	responseText: string;
@@ -13,9 +24,9 @@ type Conversation = {
 	role: "" | "admin" | "user"; // TODO: ここらへんはGeminiのドキュメント呼んでしっかり確認する
 };
 
-const ChatForm: FC<Props> = () => {
+const ChatForm: FC<Props> = ({ setActionName }) => {
 	const [question, setQuestion] = useState<string>("");
-	const [requesting, setRequesting] = useState<boolean>(false);
+	const [isRequesting, setIsRequesting] = useState<boolean>(false);
 	const [conversation, setConversation] = useState<Conversation>({
 		responseText: "",
 		lastQuestion: "",
@@ -26,7 +37,7 @@ const ChatForm: FC<Props> = () => {
 
 	async function onSubmit(e: FormEvent<HTMLButtonElement>) {
 		e.preventDefault();
-		setRequesting(true);
+		setIsRequesting(true);
 		setIsRecording(false); // NOTE: この変更によって音声認識を終了
 		try {
 			if (question === "") {
@@ -58,9 +69,19 @@ const ChatForm: FC<Props> = () => {
 			console.error("Failed to fetch Gemini API:", error);
 		} finally {
 			setQuestion("");
-			setRequesting(false);
+			setIsRequesting(false);
 		}
 	}
+
+	// NOTE: 状態ごとにアニメーションを付与する
+	useMemo(() => {
+		const nextActionName: ActionName = isRecording
+			? "[保留アクション]"
+			: isRequesting
+			? "[保留アクション].002"
+			: "[保留アクション].001";
+		setActionName(nextActionName);
+	}, [isRecording, isRequesting]);
 
 	return (
 		<form className="fixed bottom-5 w-full mx-auto px-5 flex flex-col items-center gap-4">
@@ -81,7 +102,7 @@ const ChatForm: FC<Props> = () => {
 				<button className="p-2" onClick={(e) => onSubmit(e)}>
 					<span
 						className={`block text-2xl leading-[0] iconify ${
-							requesting
+							isRequesting
 								? "svg-spinners--gooey-balls-1"
 								: "material-symbols--send-outline-rounded"
 						}`}

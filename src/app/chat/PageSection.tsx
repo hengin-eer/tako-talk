@@ -12,7 +12,7 @@ const PageSection = () => {
 	return (
 		<main className="min-h-[100svh] h-full pt-5 pb-8 grid place-items-center">
 			<ModelArea actionName={actionName} />
-			<ChatForm />
+			<ChatForm setActionName={setActionName} />
 		</main>
 	);
 };
