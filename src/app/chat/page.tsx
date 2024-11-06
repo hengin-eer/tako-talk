@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import { ModelArea } from "./ModelArea";
-import ChatForm from "./ChatForm";
+import PageSection from "./PageSection";
 
 export const metadata: Metadata = {
 	title: "チャットを始める | Tako Talk",
@@ -8,10 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function ChatPage() {
-	return (
-		<main className="min-h-[100svh] h-full pt-5 pb-8 flex flex-col items-center justify-between">
-			<ModelArea />
-			<ChatForm />
-		</main>
-	);
+	return <PageSection />;
 }
