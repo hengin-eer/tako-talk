@@ -17,8 +17,10 @@ export async function POST(req: Request) {
 			response.candidates[0].finishReason === "SAFETY"
 		) {
 			return NextResponse.json({
-				message:
-					"だはははは！！そんなこと言われても困っちゃうな～。ところでさ、別に聞きたいことは無いのかよ？",
+				message: `
+						だはははは！！そんなこと言われても困っちゃうな～。ところでさ、別に聞きたいことは無いのかよ？
+						画面を再読み込みして、会話をやり直してくれ！
+					`,
 			});
 		}
 
