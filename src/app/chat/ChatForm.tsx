@@ -22,7 +22,6 @@ type Props = {
 type Conversation = {
 	responseText: string;
 	lastQuestion: string;
-	role: "" | "admin" | "user"; // TODO: ここらへんはGeminiのドキュメント呼んでしっかり確認する
 };
 
 const ChatForm: FC<Props> = ({ setActionName }) => {
@@ -31,7 +30,6 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 	const [conversation, setConversation] = useState<Conversation>({
 		responseText: "",
 		lastQuestion: "",
-		role: "",
 	});
 	const [isQuestionVisible, setIsQuestionVisible] = useState<boolean>(true);
 	const [isAnswerVisible, setIsAnswerVisible] = useState<boolean>(true);
