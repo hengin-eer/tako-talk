@@ -92,11 +92,6 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 
 	return (
 		<form className="fixed bottom-5 w-full mx-auto px-5 flex flex-col items-center gap-4">
-			<ControllKeyAction
-				firstAction={handleListen}
-				secondAction={handleListen}
-				thirdAction={onSubmit}
-			/>
 			<div className="w-full lg:max-w-[800px] mb-5 text-black">
 				{isAnswerVisible && (
 					<BlurSection title="🐙回答" className="mb-4">
@@ -139,6 +134,12 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 						/>
 					</button>
 				</div>
+
+				<ControllKeyAction
+					firstAction={handleListen}
+					secondAction={handleListen}
+					thirdAction={onSubmit}
+				/>
 			</footer>
 		</form>
 	);
