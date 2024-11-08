@@ -13,10 +13,11 @@ import {
 type Props = {
 	onTextUpdate: (text: string) => void; // NOTE: 親コンポーネントに最新のテキストを返す
 	isRecording: boolean;
-	setIsRecording: Dispatch<SetStateAction<boolean>>;
+	setIsRecording?: Dispatch<SetStateAction<boolean>>;
+	handleListen: (e: FormEvent<HTMLButtonElement>) => void;
 };
 
-const Speech: FC<Props> = ({ onTextUpdate, isRecording, setIsRecording }) => {
+const Speech: FC<Props> = ({ onTextUpdate, isRecording, handleListen }) => {
 	const [text, setText] = useState<string>("");
 	const [transcript, setTranscript] = useState<string>("");
 
@@ -29,11 +30,6 @@ const Speech: FC<Props> = ({ onTextUpdate, isRecording, setIsRecording }) => {
 		recognitionRef.current.continuous = true;
 		recognitionRef.current.interimResults = true;
 	}
-
-	const handleListen = (e: FormEvent<HTMLButtonElement>) => {
-		e.preventDefault();
-		setIsRecording(!isRecording);
-	};
 
 	// NOTE: `useEffect`以外の実装方法無いかな？
 	useEffect(() => {

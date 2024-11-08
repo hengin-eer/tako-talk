@@ -14,6 +14,7 @@ import {
 import BlurSection from "./BlurSection";
 import { ActionName } from "@/types/Model";
 import VisibilityButton from "./VisibilityButton";
+import ControllKeyAction from "./ControllKeyAction";
 
 type Props = {
 	setActionName: Dispatch<SetStateAction<ActionName>>;
@@ -36,8 +37,8 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 
 	const [isRecording, setIsRecording] = useState<boolean>(false);
 
-	async function onSubmit(e: FormEvent<HTMLButtonElement>) {
-		e.preventDefault();
+	async function onSubmit(e?: FormEvent<HTMLButtonElement>) {
+		e?.preventDefault();
 		setIsRequesting(true);
 		setIsRecording(false); // NOTE: この変更によって音声認識を終了
 		try {
@@ -74,6 +75,11 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 		}
 	}
 
+	const handleListen = (e?: FormEvent<HTMLButtonElement>) => {
+		e?.preventDefault();
+		setIsRecording(!isRecording);
+	};
+
 	// NOTE: 状態ごとにアニメーションを付与する
 	useMemo(() => {
 		const nextActionName: ActionName = isRecording
@@ -86,6 +92,11 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 
 	return (
 		<form className="fixed bottom-5 w-full mx-auto px-5 flex flex-col items-center gap-4">
+			<ControllKeyAction
+				firstAction={handleListen}
+				secondAction={handleListen}
+				thirdAction={onSubmit}
+			/>
 			<div className="w-full lg:max-w-[800px] mb-5 text-black">
 				{isAnswerVisible && (
 					<BlurSection title="🐙回答" className="mb-4">
@@ -116,7 +127,7 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 					<Speech
 						onTextUpdate={setQuestion}
 						isRecording={isRecording}
-						setIsRecording={setIsRecording}
+						handleListen={(e) => handleListen(e)}
 					/>
 					<button className="p-2" onClick={(e) => onSubmit(e)}>
 						<span
