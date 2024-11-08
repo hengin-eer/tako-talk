@@ -1,6 +1,9 @@
-import { FC, KeyboardEvent, useState } from "react";
+"use client";
 
-type keyState = "waiting" | "listening" | "chating";
+import { FC, KeyboardEvent, useMemo, useState } from "react";
+import { useKeyPress } from "react-use";
+
+type keyState = "waiting" | "listening" | "ready";
 
 type Props = {
 	firstAction: Function;
@@ -14,12 +17,18 @@ const ControllKeyAction: FC<Props> = ({
 	thirdAction,
 }) => {
 	const [keyState, setKeyState] = useState<keyState>("waiting");
+	const [pressed, keyEvent] = useKeyPress("Enter");
 
-	const handler = (e: KeyboardEvent<HTMLDivElement>) => {
-		const key = e.key;
-		console.log("⌨⌨⌨", key);
+	const keyStateToJP = {
+		waiting: "入力待ち",
+		listening: "音声認識",
+		ready: "送信待ち",
+	};
 
-		if (key === "Enter") {
+	console.log(keyEvent);
+
+	useMemo(() => {
+		if (pressed) {
 			if (keyState == "waiting") {
 				firstAction();
 				setKeyState("listening");
@@ -27,21 +36,21 @@ const ControllKeyAction: FC<Props> = ({
 
 			if (keyState === "listening") {
 				secondAction();
-				setKeyState("chating");
+				setKeyState("ready");
 			}
 
-			if (keyState === "chating") {
+			if (keyState === "ready") {
 				thirdAction();
 				setKeyState("waiting");
 			}
 		}
-	};
+	}, [pressed, keyEvent]);
 
 	return (
-		<div
-			tabIndex={0} // `div`要素がフォーカスを受けられるようにする
-			onKeyDown={(e) => handler(e)}
-		></div>
+		<div className="flex items-center gap-1 px-4 py-2 rounded-full bg-white">
+			<div className="text-lg iconify svg-spinners--gooey-balls-2" />
+			<div>{keyStateToJP[keyState]}</div>
+		</div>
 	);
 };
 
