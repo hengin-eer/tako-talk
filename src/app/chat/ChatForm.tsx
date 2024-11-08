@@ -137,8 +137,7 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 
 				<ControllKeyAction
 					firstAction={handleListen}
-					secondAction={handleListen}
-					thirdAction={onSubmit}
+					secondAction={onSubmit}
 				/>
 			</footer>
 		</form>
