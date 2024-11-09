@@ -21,11 +21,13 @@ export async function POST(req: Request) {
 						だはははは！！そんなこと言われても困っちゃうな～。ところでさ、別に聞きたいことは無いのかよ？
 						画面を再読み込みして、会話をやり直してくれ！
 					`,
+				status: 500,
 			});
 		}
 
 		return NextResponse.json({
 			message: response.text(),
+			status: 200,
 		});
 	} catch (error) {
 		console.error("Error sending message:", error);

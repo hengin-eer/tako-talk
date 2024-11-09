@@ -58,12 +58,23 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 				referrerPolicy: "no-referrer-when-downgrade",
 			});
 
-			if (!geminiResponse.ok) {
-				throw new Error("Network response was not ok");
-			}
-
 			const responseData = await geminiResponse.json();
-			const responseMsg = responseData.message;
+			let responseMsg: string;
+			const status = await responseData.status;
+
+			if (status === 500 || status === 504) {
+				console.log("🌏🌏🌏", status)
+				console.log("🌏🌏🌏", responseData)
+				responseMsg = `
+					...おーい、聞こえているかー？
+					どうやらハイドロフォンの調子が悪いみたいだ...すまない。
+					もう1回試してみてダメだったら3分ほど待ってみてくれ
+				`;
+			} else {
+				console.log("🌏🌏🌏", status)
+				responseMsg = responseData.message;
+				console.log("🌏🌏🌏", responseData)
+			}
 
 			getVoicevox(responseMsg);
 			setConversation((prev) => ({ ...prev, responseText: responseMsg }));
@@ -135,10 +146,7 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 					</button>
 				</div>
 
-				<ControllKeyAction
-					firstAction={handleListen}
-					secondAction={onSubmit}
-				/>
+				<ControllKeyAction firstAction={handleListen} secondAction={onSubmit} />
 			</footer>
 		</form>
 	);
