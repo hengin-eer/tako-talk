@@ -62,18 +62,18 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 			let responseMsg: string;
 			const status = await responseData.status;
 
-			if (status === 500 || status === 504) {
-				console.log("🌏🌏🌏", status)
-				console.log("🌏🌏🌏", responseData)
-				responseMsg = `
-					...おーい、聞こえているかー？
-					どうやらハイドロフォンの調子が悪いみたいだ...すまない。
-					もう1回試してみてダメだったら3分ほど待ってみてくれ
-				`;
-			} else {
+			if (status === 200 || status === 501) {
 				console.log("🌏🌏🌏", status)
 				responseMsg = responseData.message;
 				console.log("🌏🌏🌏", responseData)
+			} else {
+				console.log("🌏🌏🌏", status)
+				console.log("🌏🌏🌏", responseData)
+				responseMsg = `
+					...ちょっとおいらは今機嫌が良くないんだ。
+					気まぐれで悪いんだけど、少し時間がたってから話しかけてくれないかな？
+					ほうっておいてくれよ！！
+				`;
 			}
 
 			getVoicevox(responseMsg);
