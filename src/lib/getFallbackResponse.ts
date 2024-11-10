@@ -35,6 +35,12 @@ export const getFallbackResponse = (question: string): string => {
 				ところで、お前は何歳なんや？聞いてもいいか？ 
 			`,
 		],
+		足: [
+			`
+				足は8本あるぜ！タコは足が多いのが自慢なんだ！
+				ところで、お前は足は何本だ？ 8本あるのか？ それとも… 2本？ 
+			`,
+		],
 	};
 
 	for (const key in responseMap) {
