@@ -29,13 +29,11 @@ export async function POST(req: Request) {
 			message: response.text(),
 			status: 200,
 		});
-	} catch (error) {
+	} catch (error: any) {
 		console.error("Error sending message:", error);
-		return NextResponse.json(
-			{
-				error: "Failed to send message",
-			},
-			{ status: 500 }
-		);
+		return NextResponse.json({
+			error: error,
+			status: error.status,
+		});
 	}
 }

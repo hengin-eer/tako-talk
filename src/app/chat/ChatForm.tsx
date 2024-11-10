@@ -15,6 +15,7 @@ import BlurSection from "./BlurSection";
 import { ActionName } from "@/types/Model";
 import VisibilityButton from "./VisibilityButton";
 import ControllKeyAction from "./ControllKeyAction";
+import { getFallbackResponse } from "@/lib/getFallbackResponse";
 
 type Props = {
 	setActionName: Dispatch<SetStateAction<ActionName>>;
@@ -61,19 +62,20 @@ const ChatForm: FC<Props> = ({ setActionName }) => {
 			const responseData = await geminiResponse.json();
 			let responseMsg: string;
 			const status = await responseData.status;
+			const isOk =
+				(status && status === 200) || (status === 501 && status !== 504);
 
-			if (status === 200 || status === 501) {
-				console.log("🌏🌏🌏", status)
+			if (isOk) {
+				console.log("🌏🌏🌏", status);
 				responseMsg = responseData.message;
-				console.log("🌏🌏🌏", responseData)
+				console.log("🌏🌏🌏", responseData);
+			} else if (!status) {
+				// NOTE: Geminiが正常にレスを返さない or 落ちているとき
+				console.log("Gemini死んでるで🌏🌏🌏", responseData);
+				responseMsg = getFallbackResponse(question);
 			} else {
-				console.log("🌏🌏🌏", status)
-				console.log("🌏🌏🌏", responseData)
-				responseMsg = `
-					...ちょっとおいらは今機嫌が良くないんだ。
-					気まぐれで悪いんだけど、少し時間がたってから話しかけてくれないかな？
-					ほうっておいてくれよ！！
-				`;
+				console.log("なんでも🌏🌏🌏", responseData);
+				responseMsg = getFallbackResponse(question);
 			}
 
 			getVoicevox(responseMsg);
